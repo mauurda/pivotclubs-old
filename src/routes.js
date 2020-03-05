@@ -37,9 +37,18 @@ import Image from "@material-ui/icons/Image";
 import Place from "@material-ui/icons/Place";
 import Timeline from "@material-ui/icons/Timeline";
 import WidgetsIcon from "@material-ui/icons/Widgets";
+import EmojiPeopleIcon from '@material-ui/icons/People';
 
 var dashRoutes = [
   {
+    path: "/reservations",
+    name: "Reservations",
+    rtlName: "xx",
+    icon: EmojiPeopleIcon,
+    component: ReactTables,
+    layout: "/admin"
+  }
+  ,{
     path: "/dashboard",
     name: "Dashboard",
     rtlName: "لوحة القيادة",

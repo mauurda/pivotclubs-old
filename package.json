@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "@material-ui/core": "4.3.2",
-    "@material-ui/icons": "4.2.1",
+    "@material-ui/icons": "^4.2.1",
     "chartist": "0.10.1",
     "history": "4.9.0",
     "moment": "2.24.0",
@@ -17,6 +17,8 @@
     "react-chartist": "0.13.3",
     "react-datetime": "2.16.3",
     "react-dom": "16.9.0",
+    "react-facebook-login": "^4.1.1",
+    "react-google-login": "^5.1.1",
     "react-google-maps": "9.4.5",
     "react-jvectormap": "0.0.12",
     "react-router-dom": "5.0.1",

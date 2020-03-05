@@ -103,7 +103,7 @@ const defaultFont = {
   lineHeight: "1.5em"
 };
 
-const primaryColor = ["#9c27b0", "#ab47bc", "#8e24aa", "#af2cc5", "#7b1fa2"];
+const primaryColor = ["#248232", "#ab47bc", "#8e24aa", "#af2cc5", "#7b1fa2"];
 const warningColor = [
   "#ff9800",
   "#ffa726",
@@ -174,6 +174,7 @@ const tumblrColor = "#35465c";
 const behanceColor = "#1769ff";
 const dribbbleColor = "#ea4c89";
 const redditColor = "#ff4500";
+const pivotColor = "#248232"
 
 const boxShadow = {
   boxShadow:
@@ -390,6 +391,7 @@ export {
   card,
   defaultFont,
   primaryColor,
+  pivotColor,
   warningColor,
   dangerColor,
   successColor,

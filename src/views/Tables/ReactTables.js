@@ -5,7 +5,9 @@ import ReactTable from "react-table";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 // @material-ui/icons
-import Assignment from "@material-ui/icons/Assignment";
+
+import Sync from "@material-ui/icons/Sync";
+
 import Dvr from "@material-ui/icons/Dvr";
 import Favorite from "@material-ui/icons/Favorite";
 import Close from "@material-ui/icons/Close";
@@ -15,7 +17,6 @@ import GridItem from "components/Grid/GridItem.js";
 import Button from "components/CustomButtons/Button.js";
 import Card from "components/Card/Card.js";
 import CardBody from "components/Card/CardBody.js";
-import CardIcon from "components/Card/CardIcon.js";
 import CardHeader from "components/Card/CardHeader.js";
 
 import { dataTable } from "variables/general.js";
@@ -29,6 +30,7 @@ const styles = {
     marginBottom: "0px"
   }
 };
+let clubId = 'MEX.CVA.TAB';
 
 const useStyles = makeStyles(styles);
 
@@ -37,10 +39,11 @@ export default function ReactTables() {
     dataTable.dataRows.map((prop, key) => {
       return {
         id: key,
-        name: prop[0],
-        position: prop[1],
-        office: prop[2],
-        age: prop[3],
+        name: prop.username,
+        email: prop.useremail,
+        time: prop.time,
+        party: prop.playerno,
+        sport: prop.sport,
         actions: (
           // we've added some custom button actions
           <div className="actions-right">
@@ -121,15 +124,119 @@ export default function ReactTables() {
     })
   );
   const classes = useStyles();
+  const getReservations=(clubId)=>{
+
+    let url = `https://apivotsports.herokuapp.com/reservations?clubid=`;
+    url = url.concat(clubId);
+    fetch(url)
+      .then(function(response) {
+        return response.json();
+      })
+      .then(function(json) {
+        let reservations= json;
+        return reservations;
+      })
+      .then(res => {
+        setData(res.map((prop, key) => {
+          return {
+            id: key,
+            name: prop.username,
+            email: prop.useremail,
+            time: prop.time,
+            party: prop.playerno,
+            sport: prop.sport,
+            actions: (
+              // we've added some custom button actions
+              <div className="actions-right">
+                {/* use this button to add a like kind of action */}
+                <Button
+                  justIcon
+                  round
+                  simple
+                  onClick={() => {
+                    let obj = data.find(o => o.id === key);
+                    alert(
+                      "You've clicked LIKE button on \n{ \nName: " +
+                        obj.name +
+                        ", \nposition: " +
+                        obj.position +
+                        ", \noffice: " +
+                        obj.office +
+                        ", \nage: " +
+                        obj.age +
+                        "\n}."
+                    );
+                  }}
+                  color="info"
+                  className="like"
+                >
+                  <Favorite />
+                </Button>{" "}
+                {/* use this button to add a edit kind of action */}
+                <Button
+                  justIcon
+                  round
+                  simple
+                  onClick={() => {
+                    let obj = data.find(o => o.id === key);
+                    alert(
+                      "You've clicked EDIT button on \n{ \nName: " +
+                        obj.name +
+                        ", \nposition: " +
+                        obj.position +
+                        ", \noffice: " +
+                        obj.office +
+                        ", \nage: " +
+                        obj.age +
+                        "\n}."
+                    );
+                  }}
+                  color="warning"
+                  className="edit"
+                >
+                  <Dvr />
+                </Button>{" "}
+                {/* use this button to remove the data row */}
+                <Button
+                  justIcon
+                  round
+                  simple
+                  onClick={() => {
+                    var newData = data;
+                    newData.find((o, i) => {
+                      if (o.id === key) {
+                        // here you should add some custom code so you can delete the data
+                        // from this component and from your server as well
+                        newData.splice(i, 1);
+                        return true;
+                      }
+                      return false;
+                    });
+                    setData([...newData]);
+                  }}
+                  color="danger"
+                  className="remove"
+                >
+                  <Close />
+                </Button>{" "}
+              </div>
+            )
+          };
+        }))
+      });
+
+  }
+
   return (
     <GridContainer>
       <GridItem xs={12}>
         <Card>
-          <CardHeader color="primary" icon>
-            <CardIcon color="primary">
-              <Assignment />
-            </CardIcon>
-            <h4 className={classes.cardIconTitle}>React Table</h4>
+          <CardHeader>
+          <h4 className={classes.cardIconTitle}>Reservations</h4>
+              <Button round color="primary"  onClick={()=>{getReservations(clubId)}}>
+                <Sync />
+
+              </Button>
           </CardHeader>
           <CardBody>
             <ReactTable
@@ -137,22 +244,25 @@ export default function ReactTables() {
               filterable
               columns={[
                 {
-                  Header: "Name",
+                  Header: "Player Name",
                   accessor: "name"
                 },
                 {
-                  Header: "Position",
-                  accessor: "position"
+                  Header: "Email",
+                  accessor: "email"
                 },
                 {
-                  Header: "Office",
-                  accessor: "office"
+                  Header: "Booked Time",
+                  accessor: "time"
                 },
                 {
-                  Header: "Age",
-                  accessor: "age"
-                },
-                {
+                  Header: "Party Size",
+                  accessor: "party"
+                },{
+                  Header: "Sport",
+                  accessor: "sport"
+
+                },{
                   Header: "Actions",
                   accessor: "actions",
                   sortable: false,

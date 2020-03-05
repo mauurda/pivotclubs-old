@@ -1,4 +1,5 @@
 import React from "react";
+import {Redirect} from 'react-router-dom';
 
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
@@ -19,17 +20,56 @@ import Card from "components/Card/Card.js";
 import CardBody from "components/Card/CardBody.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardFooter from "components/Card/CardFooter.js";
+import GoogleLogin from 'react-google-login';
+import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props';
 
 import styles from "assets/jss/material-dashboard-pro-react/views/loginPageStyle.js";
 
 const useStyles = makeStyles(styles);
+const clientId = '926016643840-5pkgp3lkcmjeieff55q01jqg3bbpm92n.apps.googleusercontent.com'
+const appId = '503099390580607'
 
 export default function LoginPage() {
   const [cardAnimaton, setCardAnimation] = React.useState("cardHidden");
+  // eslint-disable-next-line
+  const [userEmail, setUserEmail] = React.useState();
+  // eslint-disable-next-line
+  const [userName, setUserName] = React.useState();
+  // eslint-disable-next-line
+  const [userImg, setUserImg] = React.useState();
+  // eslint-disable-next-line
+  const [userGoogleId,setUserGoogleId] = React.useState();
+  // eslint-disable-next-line
+  const [userFbId,setUserFbId] = React.useState();
+  // eslint-disable-next-line
+  const [loggedIn,setLoggedIn] = React.useState(0);
+  const[redirectLocation,setRedirectLocation] = React.useState();
   setTimeout(function() {
     setCardAnimation("");
   }, 700);
   const classes = useStyles();
+
+  const onSignIn=(googleUser)=> {
+    let profile = googleUser.getBasicProfile();
+    setUserEmail(profile.getEmail());
+    setUserName(profile.getName());
+    setUserImg(profile.getImageUrl());
+    setUserGoogleId(profile.getEmail());
+    setLoggedIn(1);
+    setRedirectLocation("/admin/dashboard");
+    
+  }
+  
+  const responseGoogle = (response) => {
+    console.log(response);
+    setRedirectLocation("/admin/dashboard");
+    
+  }
+
+  const responseFacebook = (response) => {
+    console.log(response);
+  }
+
   return (
     <div className={classes.container}>
       <GridContainer justify="center">
@@ -42,22 +82,25 @@ export default function LoginPage() {
               >
                 <h4 className={classes.cardTitle}>Log in</h4>
                 <div className={classes.socialLine}>
-                  {[
-                    "fab fa-facebook-square",
-                    "fab fa-twitter",
-                    "fab fa-google-plus"
-                  ].map((prop, key) => {
-                    return (
-                      <Button
-                        color="transparent"
-                        justIcon
-                        key={key}
-                        className={classes.customButtonClass}
-                      >
-                        <i className={prop} />
-                      </Button>
-                    );
-                  })}
+                <FacebookLogin
+                        appId={appId}
+                        callback={responseFacebook}
+                        render={renderProps => (
+                          <Button color="white" simple onClick={renderProps.onClick}><i className={" fab fa-facebook"} /></Button>
+                        )}
+                      />
+                      <GoogleLogin
+                        clientId={clientId}
+                        render={renderProps => (
+                          <Button color="white" simple onClick={renderProps.onClick} disabled={renderProps.disabled}>
+                            <i className={" fab fa-google"} />
+                        </Button>
+                        )}
+                        buttonText="Login"
+                        onSuccess={onSignIn}
+                        onFailure={responseGoogle}
+                        cookiePolicy={'single_host_origin'}
+                        />
                 </div>
               </CardHeader>
               <CardBody>
@@ -117,6 +160,12 @@ export default function LoginPage() {
           </form>
         </GridItem>
       </GridContainer>
+      {redirectLocation ? <Redirect to={{
+            pathname: redirectLocation,
+            state: {
+              userName: userName
+           }
+        }}></Redirect> : ""}
     </div>
   );
 }

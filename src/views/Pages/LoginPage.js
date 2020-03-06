@@ -57,6 +57,7 @@ export default function LoginPage() {
       })
       .then(function(json) {
         let entries= json;
+        console.log(entreies)
         if (entries.length >= 1){
           setRedirectLocation("/admin/dashboard");
         }else{

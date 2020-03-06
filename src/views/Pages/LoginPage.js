@@ -47,6 +47,26 @@ export default function LoginPage() {
   setTimeout(function() {
     setCardAnimation("");
   }, 700);
+  
+  const checkUser =(userEmail)=>{
+    let url = `https://apivotsports.herokuapp.com/clubusers?uemail=`;
+    url = url.concat(userEmail);
+    fetch(url)
+      .then(function(response) {
+        return response.json();
+      })
+      .then(function(json) {
+        let entries= json;
+        if (entries.length >= 1){
+          setRedirectLocation("/admin/dashboard");
+        }else{
+          setRedirectLocation("/admin/wizard")
+        }
+        
+      })
+      
+  }
+
   const classes = useStyles();
 
   const onSignIn=(googleUser)=> {
@@ -56,8 +76,7 @@ export default function LoginPage() {
     setUserImg(profile.getImageUrl());
     setUserGoogleId(profile.getEmail());
     setLoggedIn(1);
-    setRedirectLocation("/admin/dashboard");
-    
+    checkUser(profile.getEmail());
   }
   
   const responseGoogle = (response) => {

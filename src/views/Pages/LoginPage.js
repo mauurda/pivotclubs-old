@@ -34,7 +34,7 @@ export default function LoginPage() {
   // eslint-disable-next-line
   const [userEmail, setUserEmail] = React.useState();
   // eslint-disable-next-line
-  const [userName, setUserName] = React.useState();
+  const [userName, setUserName] = React.useState('TestName');
   // eslint-disable-next-line
   const [userImg, setUserImg] = React.useState();
   // eslint-disable-next-line
@@ -163,7 +163,9 @@ export default function LoginPage() {
       {redirectLocation ? <Redirect to={{
             pathname: redirectLocation,
             state: {
-              userName: userName
+              userName: userName,
+              userEmail: userEmail,
+              userImg: userImg
            }
         }}></Redirect> : ""}
     </div>

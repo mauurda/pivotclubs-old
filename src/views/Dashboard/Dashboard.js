@@ -49,6 +49,8 @@ import priceImage1 from "assets/img/card-2.jpeg";
 import priceImage2 from "assets/img/card-3.jpeg";
 import priceImage3 from "assets/img/card-1.jpeg";
 
+
+
 const us_flag = require("assets/img/flags/US.png");
 const de_flag = require("assets/img/flags/DE.png");
 const au_flag = require("assets/img/flags/AU.png");
@@ -72,8 +74,9 @@ var mapData = {
 
 const useStyles = makeStyles(styles);
 
-export default function Dashboard() {
+export default function Dashboard(props) {
   const classes = useStyles();
+  console.log(props.location.state)
   return (
     <div>
       <GridContainer>
